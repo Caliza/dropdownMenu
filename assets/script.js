@@ -4,13 +4,13 @@ const brewName2 = document.getElementById('brewName2');
 const brewAddress1 = document.getElementById('brewAddress1');
 const brewCity1 = document.getElementById('brewCity1');
 const brewState1 = document.getElementById('brewState1');
-const breweries = []
 const breweryList = document.querySelector('#breweryList');
 const searchCity = document.querySelector('.search-city')
-const cityBreweries = []
 const searchFeedBack = document.getElementById('search-feedBack')
 const showButton = document.querySelector('.show-button')
 const showInput = document.querySelector('.show-input')
+const breweries = []
+const cityBreweries = []
 let state = ''
 
 //fetches state state data from openbrewerydb api.
@@ -32,10 +32,11 @@ function fetchBreweries() {
     })
 }
 
-//fetches state city data from openbrewerydb api.
+//fetches city/state data from openbrewerydb api.
 
 function fetchBreweriesByCity(city) {
     let apiUrlBrewery = `https://api.openbrewerydb.org/breweries?by_city=${city}&by_state=${state}`;
+    console.log('beta0', apiUrlBrewery);
     fetch(apiUrlBrewery).then(function (response) {
         console.log(response);
         console.log(response.json);
@@ -43,12 +44,17 @@ function fetchBreweriesByCity(city) {
         return response.json()
     }).then(function (data) {
         console.log(data);
+        displayBrewery(data)
     })
+    
 }
 
+//takes user city input.
 function handleCitySearch() {
     let city = document.querySelector('input').value
-    searchBreweryByCity(city)
+    fetchBreweriesByCity(city)
+    console.log('beta3', city);
+    //searchBreweryByCity(city)
 }
 
 function searchBreweryByCity(city) {
@@ -58,12 +64,12 @@ function searchBreweryByCity(city) {
             cityBreweries.push(breweries[i])
         }
     }
-    console.log(cityBreweries);
+    console.log('beta2', cityBreweries);
     displayBrewery(cityBreweries)
     displayNoCityAlert()
 }
 
-//displays breweries by state from dropdown menu then by breweries by city when city is entered in input field.
+//displays breweries by state from dropdown menu then breweries by city when city is entered in input field.
 
 function displayBrewery(data) {
 
